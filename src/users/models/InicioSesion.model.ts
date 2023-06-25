@@ -1,8 +1,9 @@
 import { Table, Column, Model, ForeignKey, DataType, BelongsTo } from 'sequelize-typescript';
 import { PerfilUsuario } from './PerfilUsuario.model';
 
-@Table
+@Table({ tableName: 'InicioSesion', timestamps: false })
 export class InicioSesion extends Model<InicioSesion> {
+  @ForeignKey(() => PerfilUsuario)
   @Column(DataType.INTEGER)
   usuario_id: number;
 

@@ -2,7 +2,7 @@ import { Table, Column, Model, ForeignKey, DataType, BelongsTo, HasOne } from 's
 import { InicioSesion } from './InicioSesion.model';
 import { Domicilio } from './Domicilio.model';
 
-@Table
+@Table({ tableName: 'PerfilUsuario', timestamps: false })
 export class PerfilUsuario extends Model<PerfilUsuario> {
   @Column(DataType.STRING(50))
   nombre: string;
