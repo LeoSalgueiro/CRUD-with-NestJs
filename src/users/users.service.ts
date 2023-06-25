@@ -1,24 +1,30 @@
 import { Injectable } from '@nestjs/common';
+import { InicioSesion } from './models/InicioSesion.model';
+import { PerfilUsuario } from './models/PerfilUsuario.model';
+import * as bcrypt from 'bcrypt';
 
-// This should be a real class/interface representing a user entity
-export type User = any;
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
+  async findOneForLogin(email: string, pass: string): Promise<PerfilUsuario | undefined> {
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+    const usuario = await PerfilUsuario.findOne({
+      where: { email },
+      include: [{ model: InicioSesion, required: true }],
+    });
+
+    
+    if (usuario) {
+      const { inicioSesion } = usuario;
+      let puedeLogearse = bcrypt.compareSync(pass, inicioSesion.hash); 
+      if(puedeLogearse === true){
+        return usuario
+        
+      }
+      
+    }
+    return undefined
   }
+
+
 }
