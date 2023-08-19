@@ -1,7 +1,10 @@
 import { Table, Column, Model, HasOne, DataType } from 'sequelize-typescript';
 import { PerfilUsuario } from './PerfilUsuario.model';
 
-@Table
+@Table({
+  tableName: 'Domicilio',
+  timestamps: false
+})
 export class Domicilio extends Model<Domicilio> {
   @Column(DataType.STRING(100))
   calle: string;

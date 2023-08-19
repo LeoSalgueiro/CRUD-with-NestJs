@@ -1,4 +1,4 @@
-import { Controller, Post, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 const saltos = 10;
@@ -10,13 +10,28 @@ const someOtherPlaintextPassword = 'not_bacon';
 export class UsersController {
     constructor(private readonly userService: UsersService){}
 
-
-
     @Post()
-    async crearUsuario(@Request() req): Promise <any>{
+    async createUser(@Request() req): Promise <any>{
         await this.userService.insertOne(saltos, req.body.usuario, req.body.contra)
         
-        
+    }
+
+
+    @Get(':id')
+    async obtainUser(@Param('id') id: number){
+        return await this.userService.findOne(id)
+    }
+
+
+    @Delete(':id')
+    async deleteUser(@Param('id') id: number){
+        return await this.userService.deleteUserById(id)
+    }
+
+
+    @Put(':id')
+    async updateUser(@Param('id') id: number, @Body() body: any){
+        return await this.userService.updateUserById(id, body)
     }
 
 }
