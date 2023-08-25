@@ -12,9 +12,5 @@ export class AuthenticationController {
     return this.authenticationService.signIn(signInDto.username, signInDto.password);
   }
 
-  @UseGuards(AuthenticationGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
+
 }

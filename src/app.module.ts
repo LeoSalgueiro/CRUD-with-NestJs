@@ -4,9 +4,9 @@ import { AppService } from './app.service';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationController } from './authentication/authentication.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Domicilio } from './users/models/Domicilio.model';
-import { InicioSesion } from './users/models/InicioSesion.model';
-import { PerfilUsuario } from './users/models/PerfilUsuario.model';
+import { Address } from './users/models/Address.model';
+import { InitSession } from './users/models/InitSession.model';
+import { PerfilUser } from './users/models/PerfilUser.model';
 
 @Module({
   imports: [AuthenticationModule,
@@ -16,7 +16,7 @@ import { PerfilUsuario } from './users/models/PerfilUsuario.model';
       username: 'sa',
       password: 'Leonel1995+-',
       database: 'SQLSession',
-      models: [Domicilio, InicioSesion, PerfilUsuario],
+      models: [Address, InitSession, PerfilUser],
       synchronize: false,
       
     }),

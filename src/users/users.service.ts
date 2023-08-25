@@ -1,36 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { InicioSesion } from './models/InicioSesion.model';
-import { PerfilUsuario } from './models/PerfilUsuario.model';
+import { InitSession } from './models/InitSession.model';
+import { PerfilUser } from './models/PerfilUser.model';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/sequelize';
-import { Domicilio } from './models/Domicilio.model';
+import { Address } from './models/Address.model';
 
 
 @Injectable()
 export class UsersService {
 
   constructor(
-    @InjectModel(InicioSesion)
-    private inicioSesionModel: typeof InicioSesion,
-    @InjectModel(Domicilio)
-    private domicilioModel: typeof Domicilio,
-    @InjectModel(PerfilUsuario)
-    private perfilUsuarioModel: typeof PerfilUsuario,
+    @InjectModel(InitSession)
+    private initSessionModel: typeof InitSession,
+    @InjectModel(Address)
+    private addressModel: typeof Address,
+    @InjectModel(PerfilUser)
+    private perfilUserModel: typeof PerfilUser,
   ) {}
 
 
   //Find one user by email and compare his hash for log in
-  async findOneForLogin(email: string, pass: string): Promise<PerfilUsuario | undefined> {
+  async findOneForLogin(email: string, pass: string): Promise<PerfilUser | undefined> {
 
-    const usuario = await PerfilUsuario.findOne({
+    const usuario = await this.perfilUserModel.findOne({
       where: { email },
-      include: [{ model: InicioSesion, required: true }],
+      include: [{ model: InitSession, required: true }],
     });
 
     
     if (usuario !== null) {
-      const { inicioSesion } = usuario;
-      let puedeLogearse = bcrypt.compareSync(pass, inicioSesion.hash); 
+      const { initSession } = usuario;
+      let puedeLogearse = bcrypt.compareSync(pass, initSession.hash); 
       //let puedeLogearse = true;
       if(puedeLogearse === true){
         return usuario
@@ -45,26 +45,32 @@ export class UsersService {
 
 
   //Create a new user and return the info created
-  async insertOne(saltos: number, usuario: string, contra: string) {
-    console.log('Ingresando usuario');
+  async insertOne(saltos: number, data: object) {
+    console.log('Ingresando usuario...');
+    console.log(data["perfil"].email )
+    console.log(data["perfil"]["email"] )
 
-    const hash = bcrypt.hashSync(contra, saltos);
+    const hash = bcrypt.hashSync(data["perfil"]["password"], saltos);
 
     try {
-      const existingUser = await this.perfilUsuarioModel.findOne({ where: { email: usuario } });
+      const existingUser = await this.perfilUserModel.findOne({ where: { email: data["perfil"]["email"] } });
       if (existingUser) {
         console.log("El usuario ya existe");
         return null;
       }
 
-      const domicilio = await this.domicilioModel.create({});
-      const perfilUsuario = await this.perfilUsuarioModel.create({
-        nombre: usuario,
-        email: usuario,
-        domicilio_id: domicilio.id,
+      const address = await this.addressModel.create(data["address"]);
+      const perfilUsuario = await this.perfilUserModel.create({
+        name: data["perfil"]["name"],
+        surname: data["perfil"]["surname"],
+        identity_number: data["perfil"]["identity_number"],
+        phone: data["perfil"]["phone"],
+        perfil: data["perfil"]["perfil"],
+        email: data["perfil"]["email"],
+        address_id: address.id,
       });
-      await this.inicioSesionModel.create({
-        usuario_id: perfilUsuario.id,
+      await this.initSessionModel.create({
+        user_id: perfilUsuario.id,
         hash,
       });
 
@@ -80,22 +86,26 @@ export class UsersService {
   //find a user by id of inicioSesion
   async findOne(id: number){
     try{
-      const user = await this.inicioSesionModel.findOne({ 
-        where: { usuario_id: id },
+      const user = await this.initSessionModel.findOne({ 
+        where: { user_id: id },
         include: [
           {
-            model: PerfilUsuario, 
+            model: PerfilUser, 
             required: true,
             include: [{
-              model: Domicilio, 
+              model: Address, 
               required: true
             }]
           }
         ]
       });
 
-      const domicilio =  user['perfilUsuario']['domicilio'];
-      return user;
+      //const domicilio =  user['perfilUsuario']['domicilio'];
+      if(user === null){
+        
+        return {error:"The user doesn't exists", data: null}
+      }
+      return {error:null, data:user["perfilUser"]}
 
     }
     catch(error){
@@ -106,18 +116,18 @@ export class UsersService {
 
   //delete all information of an user
   async deleteUserById(id: number){
-    const transaction = await this.inicioSesionModel.sequelize.transaction();
+    const transaction = await this.initSessionModel.sequelize.transaction();
 
     try {
       // Busca el usuario y sus relaciones
-      const user = await this.inicioSesionModel.findOne({ 
-        where: { usuario_id: id },
+      const user = await this.initSessionModel.findOne({ 
+        where: { user_id: id },
         include: [
           {
-            model: PerfilUsuario, 
+            model: PerfilUser, 
             required: true,
             include: [{
-              model: Domicilio, 
+              model: Address, 
               required: true
             }]
           }
@@ -127,8 +137,8 @@ export class UsersService {
 
       if (user) {
         // Borra las relaciones y objetos relacionados
-        await user.perfilUsuario.destroy({ transaction });
-        await user.perfilUsuario.domicilio.destroy({ transaction });
+        await user.perfilUser.destroy({ transaction });
+        await user.perfilUser.Address.destroy({ transaction });
         await user.destroy({ transaction });
 
         // Confirma la transacción
@@ -152,32 +162,32 @@ export class UsersService {
   //update user by id
   async updateUserById(id: number, body: any) {
     try {
-      const usuario = await this.inicioSesionModel.findByPk(id, {
+      const usuario = await this.initSessionModel.findByPk(id, {
         include: [
           {
-            model: PerfilUsuario, 
+            model: PerfilUser, 
             required: true,
             include: [{
-              model: Domicilio, 
+              model: Address, 
               required: true
             }]
           }
         ],
       });
-      const perfilUser = usuario['perfilUsuario']
+      const perfilUser = usuario['perfilUser']
       if (perfilUser) {
         // Actualizar los datos del usuario
-        await perfilUser.update(body);
+        await perfilUser.update(body.perfil);
 
         // Si hay datos de domicilio en el body, actualizarlos
-        if (body.perfilUsuario.domicilio) {
-          const domicilio =  usuario['perfilUsuario']['domicilio'];
+        if (body.perfil.address) {
+          const domicilio =  usuario['perfilUser']['address'];
           if (domicilio) {
-            await domicilio.update(body.perfilUsuario.domicilio);
+            await domicilio.update(body.perfil.address);
           }
         }
 
-        return usuario;
+        return usuario["perfilUser"];
       }
     } catch (error) {
       console.error('Error al actualizar usuario:', error);

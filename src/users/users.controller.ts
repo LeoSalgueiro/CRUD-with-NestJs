@@ -10,9 +10,9 @@ const someOtherPlaintextPassword = 'not_bacon';
 export class UsersController {
     constructor(private readonly userService: UsersService){}
 
-    @Post()
+    @Post('createUser')
     async createUser(@Request() req): Promise <any>{
-        await this.userService.insertOne(saltos, req.body.usuario, req.body.contra)
+        await this.userService.insertOne(saltos, req.body.data)
         
     }
 
@@ -31,7 +31,7 @@ export class UsersController {
 
     @Put(':id')
     async updateUser(@Param('id') id: number, @Body() body: any){
-        return await this.userService.updateUserById(id, body)
+        return await this.userService.updateUserById(id, body.data)
     }
 
 }
