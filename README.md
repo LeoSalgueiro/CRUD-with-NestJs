@@ -1,73 +1,50 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# CRUD with NestJS
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A simple CRUD created in NestJS with JWT for a secure authentication and Sequelize for the connection with your Db. 
+With this API, you can create users and log in for obtain a token to use in CRUDs requests to delete, update and obtain the information of the user registered. Also, your password information is saved in your database with bcrypt to protect the password of the user registered.
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Deployment
 
-## Installation
+To deploy this project you need SQL (a database sql) and three basic tables: Address, InitSession and PerfilUser; This design, allows you use this API in differentes projects.
 
+### Install
 ```bash
-$ npm install
+  npm install
 ```
 
-## Running the app
 
+### Development
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+  $ npm run start
+```
+### Watch mode
+```bash
+  $ npm run start:dev
 ```
 
-## Test
-
+### Production mode
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+  $ npm run start:prod
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+ 
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
 
-Nest is [MIT licensed](LICENSE).
+## Authors
+
+- [@LeoSalgueiro](https://www.github.com/LeoSalgueiro)
+
+
+## 🔗 Links
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://#)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/leonel-navarro-85088210b/)
+
+
+
+![Logo](https://lh3.googleusercontent.com/pw/AIL4fc9ZkUrElifbS0-gcASi141c0waI5oJKyTtV5rOAuVhPSXMdr8wSS1ykAPXV3qNY0yGxMfQHXFalSSduOepDrmNqonXJPhykfy_J1ysCshWZjpBn5Mn4PfI8Jz8MSNktHXXINtKOgOkHpixk62s5jCWtpTTjN3j0vEoRbdoMcBOGeJtswNroOK40T31dZi3lISEC9bXFxUM8kKjPXRswHpEd4Odg-fYvOeoOHFitMqkgQivj-X7x5rIInyLvLMHhp1qsuhswr4eP8-wx2Ll0Sdras5_Rw_EtcgWlh0wF55XWFHXehzuZVaNm4XI-vsANDfZffWd8RXQCOWUcdA0gslqzbCIuOuz3RZBSQ4_tJ-VesBPuOj-hWbxvfSwDwLSuneUkc40oBpogdztdWanLuK9wssiMDQb1e538xsrEBQFPjMDFEP4I79uO--gmOEm4XQE4quYOw2-xYxsMkg_KaOlMkZTktfPuNUkfboSYzTKTlYhhbAEoMPc2qVUfYEsvHT5rbtEtS-6txKOcVYnnb0UXVMMjzRlbH1ZKdjsjBw3DaDRB8vUigKUa6HDXAvcTpt5LwV_6lxa6RHXzqz_okiVkdYW4D0D85nwMLHpz009P2xOwUM4TeFjfPx-tDW596PIBMTlvbJY-kDtfNoo9YGrqMLu4ioFJZKC42pS_evU2N6P-Eo77jWzOCmizScvmxzb61LAbSUCPYjx-krGxcz1006V0b7jFFeV5W1cIMAtvkk-ejNkTRLSY1lhrRxZ7p46PzsewvaXXkQ6fU1h3-s6RFNrIIdQH31xbdrOMBzDC7Dkx4VJnuLZd4M1-3A4vTnTC80-a9PEeZHra5we4XK2HfIsc5iS5SkFPG8cwKooDisRbJ2TW5sqnxSeN9wmtJJen6eYtRPf4Byb8E3RydNMtudYFZUQtVFGdt8HEU6nohNrUfcR_uOhQM8MW82l7vVehkuWFDZCODcQuO4yb62VqwIokrbqiYi4Ul6_udU3Vx9X5DV2SsQIuHQQzmoRwaA=w1064-h400-s-no?authuser=2)
+
