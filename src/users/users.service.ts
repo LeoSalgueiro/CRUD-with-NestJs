@@ -137,23 +137,25 @@ export class UsersService {
 
       if (user) {
         // Borra las relaciones y objetos relacionados
-        await user.perfilUser.destroy({ transaction });
-        await user.perfilUser.Address.destroy({ transaction });
         await user.destroy({ transaction });
+        await user.perfilUser.destroy({ transaction });   
+        await user.perfilUser.Address.destroy({ transaction });
+        
+        
 
         // Confirma la transacción
         await transaction.commit();
-        return true;
+        return {error: false, msj: "The user has been deleted"};
       }
 
       // Si no se encuentra el usuario
       await transaction.rollback();
-      return false;
+      return {error: true, msj: "The user has been deleted"};
     } catch (error) {
       // Si ocurre algún error, realiza un rollback de la transacción
       await transaction.rollback();
-      console.error('Error al eliminar usuario:', error);
-      return false;
+      console.error('Error: ', error);
+      return {error: true, msj: "The user has not been deleted"};
     }
   
   }
